@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Enlaces Netflix</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #141414;
+      color: white;
+    }
+    h1 {
+      margin-bottom: 40px;
+    }
+    button {
+      display: block;
+      width: 280px;
+      margin: 20px auto;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #e50914;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #b20710;
+    }
+  </style>
+</head>
+<body>
+  <div id="botones" style="display: none;">
+     h1>Acciones Netflix</h1>
+       <button onclick="abrirEnlace('codigo')">Obtener código temporal</button>
+       <button onclick="abrirEnlace('contrasena')">Restablecer contraseña</button>
+       <button onclick="abrirEnlace('hogar')">Actualizar hogar</button>
+      <script>
+    function abrirEnlace(tipo) {
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzqHP386xER25XaScQUl37ai7lxrilbPDEp_cAYoeGJtsutYxiB0m9N_is486MqW2Dx/exec?tipo=" + tipo;
+
+      fetch(scriptURL)
+        .then(res => res.json())
+        .then(data => {
+          if (data.link) {
+            window.open(data.link, '_blank');
+          } else {
+            alert("Error: " + data.error);
+          }
+        })
+        .catch(err => {
+          alert("Error al conectar con el servidor.");
+          console.error(err);
+        });
+    }
+  </script>
+ </div>
+   <div id="mensaje" style="display:none; color:red; font-weight:bold; text-align:center; margin-top:20px;">
+      Este enlace está desactivado.
+  </div>
+
+  <script>
+  // Cambia aquí los enlaces activos (true = activo, false = desactivado)
+  const enlacesActivos = {
+    "1": true,
+    "2": false,
+    "3": true
+  };
+
+  // Obtiene el parámetro "link" de la URL
+  const params = new URLSearchParams(window.location.search);
+  const link = params.get('link');
+
+  // Mostrar u ocultar según si el link está activo o no
+  if(link && enlacesActivos[link]) {
+    document.getElementById('botones').style.display = 'block';
+  } else {
+    document.getElementById('mensaje').style.display = 'block';
+  }
+</script>
+
+  
+
+</body>
+</html>
